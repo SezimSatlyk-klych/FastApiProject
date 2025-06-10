@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Tasks for user: {{ user_id }}</h2>
+
+<form method="post" action="/tasks">
+  <input name="title" placeholder="New Task">
+  <input type="hidden" name="user_id" value="{{ user_id }}">
+  <button type="submit">Add Task</button>
+</form>
+
+<ul>
+  {% for task in tasks %}
+    <li>
+      {{ task.title }}
+      <form method="post" action="/tasks/delete" style="display:inline">
+        <input type="hidden" name="task_id" value="{{ task.id }}">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <button type="submit">Delete</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+</body>
+</html>
