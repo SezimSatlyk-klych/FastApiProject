@@ -1,0 +1,25 @@
+name: CI - FastAPI with Docker
+
+on:
+  push:
+    branches: [main]  # Триггер: пуш в main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v3
+
+      - name: Установка Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Установка зависимостей
+        run: |
+          pip install -r requirements.txt
+
+      - name: Сборка Docker-образа
+        run: docker build -t fastapi-app .
