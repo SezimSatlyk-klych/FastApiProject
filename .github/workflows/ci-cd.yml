@@ -19,7 +19,7 @@ jobs:
 
       - name: Установка зависимостей
         run: |
-          pip install -r requirements.txt
+          pip install -r fastapi-todo/requirements.txt
 
       - name: Сборка Docker-образа
         run: docker build -t fastapi-app .
