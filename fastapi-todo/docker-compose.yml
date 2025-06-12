@@ -11,6 +11,9 @@ services:
       - .env
     depends_on:
       - db
+      - redis
+    networks:
+      - app-network
 
   db:
     image: postgres:15
@@ -21,6 +24,31 @@ services:
       POSTGRES_DB: mydb
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  celery:
+    build: .
+    container_name: celery
+    command: celery -A app.celery_app worker --loglevel=info  # Путь к Celery
+    depends_on:
+      - redis
+      - db
+    networks:
+      - app-network
+    user: celeryuser  # Указываем, что контейнер должен работать от этого пользователя
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
